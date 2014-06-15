@@ -1,0 +1,17 @@
+server
+{
+    listen       80 default_server;
+
+location /
+    {
+        uwsgi_pass unix:/run/uwsgi/app/car/socket;
+        #uwsgi_pass 127.0.0.1:1999;
+	include uwsgi_params;
+    }
+    
+    location /www
+    {
+        alias /home/lab_alglab/rep/car/statics/HTML;
+    }
+
+}

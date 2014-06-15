@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Blueprint, request, Response, Flask
 from flask import url_for, redirect
 from flask import render_template
 from flask.ext.uwsgi_websocket import GeventWebSocket
 
-#from classes import logger
+from classes import logger
 
 #from flask.ext.uwsgi_websocket import WebSocket
 from flask_uwsgi_websocket.websocket import WebSocket
@@ -43,12 +43,17 @@ def web_socket():
 
 @ws.route('/websocket')
 def web_socket_echo(ws):
-    while True:
-        msg = ws.receive()
-        if msg is not None:
-            ws.send(msg)
-        else:
-            return
+    try:
+        while True:
+            msg = ws.receive()
+            if msg is not None:
+                ws.send(msg)
+            else:
+                return
+    except Exception, e:
+        logger.exception(e)
+        response = Response(response=None, status=200)
+        return response
 
 @gws.route('/echo')
 def echo(ws):
@@ -56,9 +61,13 @@ def echo(ws):
         message = ws.receive()
         ws.send(message)
 
+from werkzeug.debug import DebuggedApplication
 
+app.debug = True
+if (app.debug ):
+    app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
 ########################################################################################################################
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
 
 
