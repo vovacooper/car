@@ -68,6 +68,6 @@ if (app.debug ):
     app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
 ########################################################################################################################
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
 
 
