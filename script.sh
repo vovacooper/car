@@ -99,10 +99,6 @@ fi
 
 cd car
 
-
-
-
-
 echo "-----------------------------------------------------------"
 echo "Virtualenv configure"
 echo "-----------------------------------------------------------"
@@ -116,20 +112,51 @@ else
 	virtualenv .
 fi
 
-source bin/activate
+#source bin/activate
 #deactivate
 
-echo "It seems like your system does not have gcc. 
-Install build tools using following command: 
-apt-get install build-essential python-dev"
-sudo apt-get install build-essential python-dev 
 
-#install openssl for uwsgi websocket
-sudo apt-get install libssl-dev
 
-echo "installing all requairments for repository"
-./bin/pip install -r req.txt --upgrade  --force-reinstall
+read -p "Download and install req.txt? (y/n) " RESP
+if [ "$RESP" = "y" ]; then
+  echo "It seems like your system does not have gcc. 
+  Install build tools using following command: 
+  apt-get install build-essential python-dev"
+  sudo apt-get install build-essential python-dev 
 
+  #install openssl for uwsgi websocket
+  sudo apt-get install libssl-dev
+
+  echo "installing all requairments for repository"
+  ./bin/pip install -r req.txt --upgrade  --force-reinstall
+else
+  echo "not installing req.txt";
+fi
+
+echo "-----------------------------------------------------------"
+echo "DB configuration"
+echo "-----------------------------------------------------------"
+#MONGODB
+if which "mongodb" >/dev/null; then
+    echo "mongodb exists"
+else
+  echo "Installing: mongodb"
+  
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+  echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+
+  sudo apt-get update
+  sudo apt-get install mongodb-org
+fi
+#REDIS
+if which "redis-server" >/dev/null; then
+  echo "redis-server exists"
+else
+  echo "Installing: redis-server"
+  sudo add-apt-repository ppa:rwky/redis
+  sudo apt-get update
+  sudo apt-get install redis-server
+fi
 
 echo "-----------------------------------------------------------"
 echo "UWSGI configuration"
