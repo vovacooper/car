@@ -1,7 +1,7 @@
 delta_price
 ===========
 
-just rin script.sh for configuring the system
+just run script.sh for configuring the system
 
 ```
 ./script.sh
