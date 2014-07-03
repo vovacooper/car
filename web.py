@@ -1,7 +1,9 @@
-from flask import Blueprint, request, Response, Flask
+from flask import Blueprint, request, Response, Flask, make_response ,json
 from flask import url_for, redirect
 from flask import render_template
 from flask.ext.uwsgi_websocket import GeventWebSocket
+
+from functools import wraps
 
 from classes import logger
 
@@ -33,6 +35,56 @@ def hello():
 @app.route('/hello/<name>')
 def hello1(name=None):
     return render_template('name_template.html', name=name)
+
+########################################################################################################################
+#HEADERS
+def add_response_headers(headers={}):
+    """This decorator adds the headers passed in to the response"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            resp = make_response(f(*args, **kwargs))
+            h = resp.headers
+            for header, value in headers.items():
+                h[header] = value
+            return resp
+        return decorated_function
+    return decorator
+
+
+def appId(f):
+    """This decorator passes X-Robots-Tag: noindex"""
+    @wraps(f)
+    @add_response_headers({'X-IBS-APP_ID': 'akldqwdj283742j9834h2d'})
+    def decorated_function(*args, **kwargs):
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/h')
+@add_response_headers({'X-IBS-APP_ID': 'akldqwdj283742j9834h2d'})
+def not_indexed():
+    """
+    This page will be served with X-Robots-Tag: noindex
+    in the response headers
+    """
+    return "Check my headers!"
+
+@app.route('/headers')
+def headers():
+    api_id = request.headers.get('X-IBS-API-ID')
+    app_id = request.headers.get('X-IBS-APP-ID')
+    response_data = \
+        {
+            "vova": "cooper",
+            "api_id": api_id,
+            "app_id": app_id,
+        }
+    response_json = json.dumps(response_data)
+
+    return Response(response=response_json,
+                        status=200,
+                        mimetype="application/json",
+                        headers={"api_id": api_id, "app_id": app_id})
 
 
 ########################################################################################################################
