@@ -4,9 +4,9 @@ server
 
 location /
     {
-        uwsgi_pass unix:/var/run/flask-uwsgi;
+        uwsgi_pass unix:/var/run/flask-uwsgi.sock;
         #uwsgi_pass 127.0.0.1:1999;
-	include uwsgi_params;
+	    include uwsgi_params;
     }
     
     location /www

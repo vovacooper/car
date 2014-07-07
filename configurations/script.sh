@@ -127,6 +127,9 @@ if [ "$RESP" = "y" ]; then
   #install openssl for uwsgi websocket
   sudo apt-get install libssl-dev
 
+  #rebuild with pcre support !!!
+  sudo apt-get install libpcre3 libpcre3-dev
+
   echo "installing all requairments for repository"
   ./bin/pip install -r req.txt --upgrade  --force-reinstall
 else
@@ -163,25 +166,31 @@ echo "UWSGI NGINX configuration"
 echo "-----------------------------------------------------------"
 
 
-# Create a directory for the UNIX sockets
-sudo mkdir /var/run/flask-uwsgi
-sudo chown www-data:www-data /var/run/flask-uwsgi
+#Create a directory for the UNIX sockets
+#sudo mkdir /var/run/flask-uwsgi
+#sudo chown www-data:www-data /var/run/flask-uwsgi
 
 # Create a directory for the logs
 sudo mkdir /var/log/flask-uwsgi
 sudo chown www-data:www-data /var/log/flask-uwsgi
 
-# Create a directory for the configs
-sudo mkdir /etc/flask-uwsgi
 
 #upstart file 
-co /home/vovacooper/repositories/car/configurations/uwsgi/uwsgi.conf /etc/init/flask-uwsgi.conf
+sudo cp /home/vovacooper/repositories/car/configurations/uwsgi/uwsgi.conf /etc/init/flask-uwsgi.conf
+
+# Create a directory for the configs
+sudo mkdir /etc/flask-uwsgi
 #init file for uwsgi
-cp /home/vovacooper/repositories/car/configurations/uwsgi/uwsgi.ini /etc/flask-uwsgi/flask-uwsgi.ini
+sudo cp /home/vovacooper/repositories/car/configurations/uwsgi/uwsgi.ini /etc/flask-uwsgi/flask-uwsgi.ini
 
 
-#sudo service uwsgi restart
-#sudo service nginx restart
+#Nginx configuation
+sudo cp /home/vovacooper/repositories/car/configurations/nginx/default /etc/nginx/sites-available/default
+
+
+sudo service flask-uwsgi restart
+sudo service nginx restart
+
 echo "DONE"
 echo "-----------------------------------------------------------"
 

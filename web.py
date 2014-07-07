@@ -5,7 +5,7 @@ from flask.ext.uwsgi_websocket import GeventWebSocket
 
 from functools import wraps
 
-from classes import logger
+from classes.logger import logger
 
 #from flask.ext.uwsgi_websocket import WebSocket
 from flask_uwsgi_websocket.websocket import WebSocket
@@ -15,6 +15,8 @@ from modules.data_module import data_module
 
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
+
 ws = WebSocket(app)
 gws = GeventWebSocket(app)
 
@@ -96,6 +98,7 @@ def web_socket():
 @ws.route('/websocket')
 def web_socket_echo(ws):
     try:
+        logger.warning("/websocket")
         while True:
             msg = ws.receive()
             if msg is not None:
@@ -120,6 +123,7 @@ if (app.debug ):
     app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
 ########################################################################################################################
 if __name__ == "__main__":
+    logger.info("Starting application!")
     app.run(host='0.0.0.0')
 
 
