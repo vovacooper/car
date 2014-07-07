@@ -176,16 +176,16 @@ sudo chown www-data:www-data /var/log/flask-uwsgi
 
 
 #upstart file 
-sudo cp /home/vovacooper/repositories/car/configurations/uwsgi/uwsgi.conf /etc/init/flask-uwsgi.conf
+sudo cp ~/repositories/car/configurations/uwsgi/uwsgi.conf /etc/init/flask-uwsgi.conf
 
 # Create a directory for the configs
 sudo mkdir /etc/flask-uwsgi
 #init file for uwsgi
-sudo cp /home/vovacooper/repositories/car/configurations/uwsgi/uwsgi.ini /etc/flask-uwsgi/flask-uwsgi.ini
+sudo cp ~/repositories/car/configurations/uwsgi/uwsgi.ini /etc/flask-uwsgi/flask-uwsgi.ini
 
 
 #Nginx configuation
-sudo cp /home/vovacooper/repositories/car/configurations/nginx/default /etc/nginx/sites-available/default
+sudo cp ~/repositories/car/configurations/nginx/default /etc/nginx/sites-available/default
 
 
 sudo service flask-uwsgi restart

@@ -17,7 +17,7 @@
                     $('#messages').append("<li>Your browser doesn't support WebSockets.</li>");
                 }
             }
-            ws = new WebSocket('ws://127.0.0.1/websocket');
+            ws = new WebSocket('ws://95.35.96.122/websocket');
             ws.onopen = function(evt) {
                 $('#messages').append('<li>WebSocket connection opened.</li>');
             }

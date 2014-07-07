@@ -1,6 +1,11 @@
 server
 {
     listen       80 default_server;
+    #listen       443 ssl;
+
+    #ssl_certificate /home/lab_alglam/repositories/ssl/foobar.cst;
+    #ssl_certificate_key /home/lab_alglam/repositories/ssl/foobar.key;
+
 
 location /
     {
@@ -11,7 +16,7 @@ location /
     
     location /www
     {
-        alias /home/lab_alglab/rep/car/statics/HTML;
+        alias /home/lab_alglam/rep/car/statics/HTML;
     }
 
 }
