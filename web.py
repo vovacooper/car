@@ -11,6 +11,16 @@ from flask.ext.uwsgi_websocket import GeventWebSocket
 from flask.ext.uwsgi_websocket import WebSocket
 #from flask_uwsgi_websocket.websocket import WebSocket
 
+
+
+#Admin
+from flask.ext.admin import Admin
+
+
+
+
+
+
 ########################################################################################################################
 from modules.data_module import data_module
 
@@ -22,6 +32,8 @@ app = Flask(__name__)
 ws = WebSocket(app)
 #ws = GeventWebSocket(app)
 
+#ADMIN
+admin = Admin(app)
 
 ########################################################################################################################
 
@@ -90,7 +102,8 @@ def headers():
                         mimetype="application/json",
                         headers={"api_id": api_id, "app_id": app_id})
 
-
+########################################################################################################################
+#WEBSOCKET
 ########################################################################################################################
 @app.route("/ws")
 def web_socket():
