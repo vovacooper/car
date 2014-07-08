@@ -1,24 +1,26 @@
 from flask import Blueprint, request, Response, Flask, make_response ,json
 from flask import url_for, redirect
 from flask import render_template
-from flask.ext.uwsgi_websocket import GeventWebSocket
+
 
 from functools import wraps
 
 from classes.logger import logger
 
-#from flask.ext.uwsgi_websocket import WebSocket
-from flask_uwsgi_websocket.websocket import WebSocket
+from flask.ext.uwsgi_websocket import GeventWebSocket
+from flask.ext.uwsgi_websocket import WebSocket
+#from flask_uwsgi_websocket.websocket import WebSocket
 
 ########################################################################################################################
 from modules.data_module import data_module
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
+#app.debug = True
+#app.config['DEBUG'] = True
 
 ws = WebSocket(app)
-gws = GeventWebSocket(app)
+#ws = GeventWebSocket(app)
 
 
 ########################################################################################################################
@@ -110,20 +112,15 @@ def web_socket_echo(ws):
         response = Response(response=None, status=200)
         return response
 
-@gws.route('/echo')
+@ws.route('/echo')
 def echo(ws):
     while True:
         message = ws.receive()
         ws.send(message)
 
-from werkzeug.debug import DebuggedApplication
 
-app.debug = True
-if (app.debug ):
-    app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
 ########################################################################################################################
 if __name__ == "__main__":
     logger.info("Starting application!")
     app.run(host='0.0.0.0')
-
-
+    #, gevent=1000
