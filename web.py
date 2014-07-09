@@ -1,23 +1,13 @@
-from flask import Blueprint, request, Response, Flask, make_response ,json
-from flask import url_for, redirect
-from flask import render_template
-
-
 from functools import wraps
 
+from flask import request, Response, Flask, make_response ,json
+from flask import render_template
 from classes.logger import logger
 
-from flask.ext.uwsgi_websocket import GeventWebSocket
+
+#from flask.ext.uwsgi_websocket import GeventWebSocket
 from flask.ext.uwsgi_websocket import WebSocket
 #from flask_uwsgi_websocket.websocket import WebSocket
-
-
-
-#Admin
-from flask.ext.admin import Admin
-
-
-
 
 
 
@@ -29,14 +19,25 @@ app = Flask(__name__)
 #app.debug = True
 #app.config['DEBUG'] = True
 
+'''
+this is for loadimg flask admin like a blueprint
+'''
+#Admin
+from flask.ext.admin import Admin
+admin = Admin(app)
+#add admin
+import modules.admin_module
+
+'''
+WEBSOCKET
+'''
 ws = WebSocket(app)
 #ws = GeventWebSocket(app)
 
-#ADMIN
-admin = Admin(app)
+
+
 
 ########################################################################################################################
-
 app.register_blueprint(data_module)
 
 

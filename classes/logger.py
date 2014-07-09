@@ -12,8 +12,8 @@ if not os.path.exists("/var/log/flask-uwsgi/"):
 logger = logging.getLogger("logger")
 logger.setLevel(level)
 
-#fh = logging.FileHandler("log/car_log.log")
-fh = logging.FileHandler("/var/log/flask-uwsgi/car_log.log")
+fh = logging.FileHandler("log/car_log.log")
+#fh = logging.FileHandler("/var/log/flask-uwsgi/car_log.log")
 fh.setLevel(level)
 
 formatter = logging.Formatter("%(asctime)s %(module)s.%(funcName)s -> %(lineno)d-%(levelname)s: %(message)s")
